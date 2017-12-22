@@ -27,8 +27,6 @@
     mounted () {
 
       this.$store.dispatch('requestSeller')
-      this.$store.dispatch('requestGoods')
-      this.$store.dispatch('requestRatings')
     },
 
     components: {
@@ -49,6 +47,8 @@
       text-align center
       font-size 14px
       color rgb(77,85,93)
-      .router-link-active
-        color: rgb(240,20,20)
+      &>a
+        display block
+        &.router-link-active
+          color: rgb(240,20,20)
 </style>

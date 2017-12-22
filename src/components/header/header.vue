@@ -1,21 +1,21 @@
 <template>
   <div class="header">
-    <div class="content-wrapper">
+    <div class="content-wrapper" v-if="seller.supports">
       <div class="avatar">
-        <img src="./avatar.jpg" >
+        <img :src="seller.avatar" >
       </div>
       <div class="content">
         <div class="title">
           <span class="brand"></span>
-          <span class="name">粥品香坊（回龙观）</span>
+          <span class="name">{{seller.name}}</span>
         </div>
-        <div class="description">蜂鸟专送/38分钟送达</div>
+        <div class="description">{{seller.description}}/{{seller.deliveryTime}}分钟送达</div>
         <div class="supports">
-          <span class="icon discount"></span>
-          <span class="text">在线支付满28减5</span>
+          <span class="icon" :class="supClasses[seller.supports[0].type]"></span>
+          <span class="text">{{seller.supports[0].description}}</span>
         </div>
-        <div class="supports-count">
-          <span class="count">5个</span>
+        <div class="supports-count" >
+          <span class="count">{{seller.supports.length}}个</span>
           <span class="icon-keyboard_arrow_right"></span>
         </div>
       </div>
@@ -23,26 +23,19 @@
     <div class="bulletin-wrapper">
       <span class="bulletin-title"></span>
       <span class="bulletin-text">
-        粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。
+        {{seller.bulletin}}
       </span>
       <span class="icon-keyboard_arrow_right"></span>
     </div>
     <div class="bg">
-      <img src="./avatar.jpg" alt="">
+      <img :src="seller.avatar" alt="">
     </div>
     <div class="mask">
       <div class="mask-wrapper">
         <div class="mask-main">
-          <h1>粥品香坊（回龙观）</h1>
+          <h1>{{seller.name}}</h1>
           <div class="stars-wrapper">
-            <div class="stars star-48">
-              <span class="star on"></span>
-              <span class="star on"></span>
-              <span class="star on"></span>
-              <span class="star half"></span>
-              <span class="star off"></span>
-            </div>
-
+            <star/>
           </div>
           <div class="info">
             <div class="line"></div>
@@ -50,25 +43,9 @@
             <div class="line"></div>
           </div>
           <ul class="list">
-            <li>
-              <span class="iocn decrease"></span>
-              <span>在线支付满28减5</span>
-            </li>
-            <li>
-              <span class="iocn discount"></span>
-              <span>VC无限橙果汁全场8折</span>
-            </li>
-            <li>
-              <span class="iocn guarantee"></span>
-              <span>单人精彩套餐</span>
-            </li>
-            <li>
-              <span class="iocn invoice"></span>
-              <span>该商家支持发票,请下单写好发票抬头</span>
-            </li>
-            <li>
-              <span class="iocn special"></span>
-              <span>已加入“外卖保”计划,食品安全保障</span>
+            <li v-for="(support, index) in seller.supports" :key="index">
+              <span class="iocn" :class="supClasses[index]"></span>
+              <span>{{support.description}}</span>
             </li>
           </ul>
           <div class="info">
@@ -78,7 +55,7 @@
           </div>
           <div class="context">
             <p class="text">
-              粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。
+              {{seller.bulletin}}
             </p>
           </div>
 
@@ -93,8 +70,16 @@
 
 <script>
   import {mapState} from 'vuex'
+  import star from '../star/star.vue'
   export default {
-
+    data(){
+      return{
+        supClasses:["decrease","discount","guarantee","invoice","special"]
+      }
+    },
+    components:{
+      star
+    },
     computed: {
       ...mapState(['seller'])
     }
@@ -155,16 +140,16 @@
             height 12px
             background-repeat no-repeat
             background-size 12px 12px
-          .decrease
-            bg-image(decrease_1)
-          .discount
-            bg-image(discount_1)
-          .guarantee
-            bg-image(guarantee_1)
-          .invoice
-            bg-image(invoice_1)
-          .special
-            bg-image(special_1)
+            &.decrease
+              bg-image(decrease_1)
+            &.discount
+              bg-image(discount_1)
+            &.guarantee
+              bg-image(guarantee_1)
+            &.invoice
+              bg-image(invoice_1)
+            &.special
+              bg-image(special_1)
 
           .text
             font-size 10px
