@@ -14,13 +14,13 @@
           <span class="icon" :class="supClasses[seller.supports[0].type]"></span>
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
-        <div class="supports-count" >
+        <div class="supports-count" @click="toggleShow">
           <span class="count">{{seller.supports.length}}个</span>
           <span class="icon-keyboard_arrow_right"></span>
         </div>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="toggleShow">
       <span class="bulletin-title"></span>
       <span class="bulletin-text">
         {{seller.bulletin}}
@@ -30,12 +30,12 @@
     <div class="bg">
       <img :src="seller.avatar" alt="">
     </div>
-    <div class="mask">
+    <div class="mask" v-show="isShow">
       <div class="mask-wrapper">
         <div class="mask-main">
           <h1>{{seller.name}}</h1>
           <div class="stars-wrapper">
-            <star/>
+            <star :score="seller.score" :size="48"/>
           </div>
           <div class="info">
             <div class="line"></div>
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="mask-footer">
-        <span class="icon-close"></span>
+        <span class="icon-close" @click="toggleShow"></span>
       </div>
     </div>
   </div>
@@ -74,7 +74,13 @@
   export default {
     data(){
       return{
-        supClasses:["decrease","discount","guarantee","invoice","special"]
+        supClasses:["decrease","discount","guarantee","invoice","special"],
+        isShow:false
+      }
+    },
+    methods:{
+      toggleShow(){
+        this.isShow = !this.isShow
       }
     },
     components:{
@@ -215,7 +221,6 @@
 
 
     .mask
-      display none
       z-index 100
       position fixed
       top:0
@@ -235,64 +240,6 @@
             margin-bottom 16px
           .stars-wrapper
             height 24px
-            .star-48
-              text-align center
-              .star
-                display inline-block
-                vertical-align middle
-                width 20px
-                height 19px
-                margin-right 22px
-                background-repeat no-repeat
-                background-size 20px 19px
-              .star:last-child
-                margin-right 0
-              .on
-                bg-star(star48_on)
-              .half
-                bg-star(star48_half)
-              .off
-                bg-star(star48_off)
-
-            .star-36
-              text-align center
-              .star
-                display inline-block
-                vertical-align middle
-                width 15px
-                height 15px
-                margin-right 22px
-                background-repeat no-repeat
-                background-size 15px 15px
-              .star:last-child
-                margin-right 0
-              .on
-                bg-star(star36_on)
-              .half
-                bg-star(star36_half)
-              .off
-                bg-star(star36_off)
-
-            .star-24
-              text-align center
-              .star
-                display inline-block
-                vertical-align middle
-                width 10px
-                height 10px
-                margin-right 22px
-                background-repeat no-repeat
-                background-size 10px 10px
-              .star:last-child
-                margin-right 0
-              .on
-                bg-star(star24_on)
-              .half
-                bg-star(star24_half)
-              .off
-                bg-star(star24_off)
-
-
           .info
             margin-top 28px
             margin-bottom 24px
