@@ -30,7 +30,8 @@
     <div class="bg">
       <img :src="seller.avatar" alt="">
     </div>
-    <div class="mask" v-show="isShow">
+    <transition name="fade">
+      <div class="mask" v-show="isShow">
       <div class="mask-wrapper">
         <div class="mask-main">
           <h1>{{seller.name}}</h1>
@@ -65,6 +66,7 @@
         <span class="icon-close" @click="toggleShow"></span>
       </div>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -228,6 +230,10 @@
       width 100%
       height 100%
       background-color rgba(7,17,27,0.8)
+      &.fade-enter-active,&.fade-leave-active
+        transition opacity 0.5s
+      &.fade-enter,&.fade-leave-to
+        opacity 0
       .mask-wrapper
         min-height 100%
         .mask-main

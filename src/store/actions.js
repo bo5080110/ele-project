@@ -24,12 +24,13 @@ export default {
     })
   },
 
-  requestGoods({commit}) {
+  requestGoods({commit}, cb) {
     requestGoods().then(response => {
       const result = response.data  // {code:0, data: goods}
       if(result.code===0) {
         const goods = result.data
         commit("RECEIVE_GOODS", {goods})
+        cb && cb()
       }
     })
   }
