@@ -3,8 +3,8 @@
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <!--current-->
-        <li v-for="(good, index) in goods" :class="{current:isCurrent}"
-            :key="index" class="menu-item">
+        <li v-for="(good, index) in goods" :key="index" class="menu-item"
+            :class="{current:currentIndex===index}" @click="clickMenu(index)">
           <span class="text border-1px">
             <span class="icon guarantee"></span>
             {{good.name}}
@@ -33,7 +33,7 @@
                   <span class="old">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  cartcontrol组件
+                  <cartcontrol :food="food"/>
                 </div>
               </div>
             </li>
@@ -47,15 +47,19 @@
 <script>
   import {mapState} from "vuex"
   import BScroll from "better-scroll"
+  import cartcontrol from "../../components/cartcontrol/cartcontrol.vue"
+  import shopcart from "../../components/shopcart/shopcart.vue"
   export default {
     data(){
       return {
-
+        tops: [],
+        scrollY: 0
       }
     },
     computed: {
       currentIndex(){
-        return
+        let {tops, scrollY} = this
+        return tops.findIndex((top, index) => scrollY >= top && scrollY < tops[index + 1])
       },
       ...mapState(["goods"])
     },
@@ -63,6 +67,7 @@
       this.$store.dispatch("requestGoods", () => {
         this.$nextTick(() => {
           this._initScroll()
+          this._initTops()
         })
       })
     },
@@ -70,13 +75,48 @@
       _initScroll(){
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true,
-          probetype: 2
+          probeType: 2
         })
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
           click: true,
-          probetype: 2
+          probeType: 3
         })
+        this.foodsScroll.on("scroll",(event)=>{
+          this.scrollY = Math.abs(event.y)
+        })
+        /*this.foodsScroll.on('scrollEnd', (event) => {
+          // 获取滚动的y坐标
+          console.log('scrollEnd', event.y)
+          this.scrollY = Math.abs(event.y)
+        })*/
+      },
+      _initTops(){
+        let lis = this.$refs.foodsWrapper.getElementsByClassName("food-list")
+        let tops = []
+        let top = 0
+        tops.push(top)
+        /*Array.prototype.slice.call(lis).forEach( li =>{
+         top += li.clientHeight
+         console.log(top)
+         tops.push(top)
+         })*/
+
+        for (let i = 0; i < lis.length; i++) {
+          let li = lis[i];
+          top += li.clientHeight
+          tops.push(top)
+        }
+        this.tops = tops
+        console.log(tops)
+      },
+      clickMenu(index){
+        this.scrollY = this.tops[index]
+        this.foodsScroll.scrollTo(0, -this.scrollY, 300)
       }
+    },
+    components:{
+      cartcontrol,
+      shopcart
     }
 
   }

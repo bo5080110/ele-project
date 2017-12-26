@@ -33,5 +33,12 @@ export default {
         cb && cb()
       }
     })
+  },
+  updateFoodCount({commit}, {food,isAdd}){
+    if(isAdd) {
+      commit("INCRMENT_FOOD_COUNT", {food})
+    } else {
+      commit("DECRMENT_FOOD_COUNT", {food})
+    }
   }
 }
