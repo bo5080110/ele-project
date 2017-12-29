@@ -26,5 +26,9 @@ export default {
     if (food.count) {
       food.count--
     }
+  },
+
+  CLEA_RCART(state, {foods}){
+    foods.forEach(food => food.count = 0)
   }
 }

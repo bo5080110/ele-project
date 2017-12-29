@@ -105,8 +105,6 @@
 
       // 在enter动画开始之前回调, 指定动画起始时的样式状态
       beforeDrop (el) {
-        console.log('beforeDrop()')
-
         // 查找对应的ball
         const ball = this.droppingBalls.shift()
         const startEl = ball.startEl
@@ -129,7 +127,6 @@
       },
       // 在beforeDrop执行完后立即回调, 指定动画结束时的样式状态
       drop (el) {
-        console.log('drop()')
         // 强制重排重绘
             // 排: 进行布局计算
         const temp = el.clientHeight
@@ -141,7 +138,6 @@
       },
       // 在动画结束后回调, 隐藏小球
       afterDrop (el) {
-        console.log('afterDrop()')
         // 隐藏小球
         // el.ball.isShow = false
 
@@ -176,9 +172,7 @@
 
     computed: {
       ...mapState(['seller']),
-      ...mapGetters({
-        foods: 'cartFoods'
-      }),
+      ...mapGetters(['foods']),
 
       totalCount() {
         return this.foods.reduce((preTotal, food) => preTotal + food.count, 0)
@@ -206,7 +200,6 @@
       },
 
       listShow () {
-        console.log('listShow')
         let {isShow, totalCount} = this
         if(totalCount===0) {
           // 一旦数量变为0时, 设置isShow为false

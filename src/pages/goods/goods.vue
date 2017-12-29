@@ -41,6 +41,7 @@
         </li>
       </ul>
     </div>
+    <shopcart />
   </div>
 </template>
 
